@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,38 +6,39 @@
 <link rel="stylesheet" href="css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/turn.js"></script>
-<script src="https://unpkg.com/@panzoom/panzoom@9.4.3/dist/panzoom.min.js"></script>
 
 <style>
 
 </style>
 </head>
 <body>
-<div id="flipbook">
-<div class="hard page"><img src="pages/page1.jpg"></div>
-<div class="page"><img src="pages/page2.jpg"></div>
-<div class="page"><img src="pages/page3.jpg"></div>
-<div class="page"><img src="pages/page4.jpg"></div>
-<div class="page"><img src="pages/page5.jpg"></div>
-<div class="page"><img src="pages/page6.jpg"></div>
-<div class="page"><img src="pages/page7.jpg"></div>
-<div class="page"><img src="pages/page8.jpg"></div>
-<div class="page"><img src="pages/page9.jpg"></div>
-<div class="page"><img src="pages/page10.jpg"></div>
-<div class="page"><img src="pages/page11.jpg"></div>
-<div class="page"><img src="pages/page12.jpg"></div>
-<div class="page"><img src="pages/page13.jpg"></div>
-<div class="page"><img src="pages/page14.jpg"></div>
-<div class="page"><img src="pages/page15.jpg"></div>
-<div class="page"><img src="pages/page16.jpg"></div>
-<div class="page"><img src="pages/page17.jpg"></div>
-<div class="page"><img src="pages/page18.jpg"></div>
-<div class="page"><img src="pages/page19.jpg"></div>
-<div class="page"><img src="pages/page20.jpg"></div>
-<div class="page"><img src="pages/page21.jpg"></div>
-<div class="page"><img src="pages/page22.jpg"></div>
-<div class="page"><img src="pages/page23.jpg"></div>
-<div class="hard page"><img src="pages/page24.jpg"></div>
+<div id="flipbook-container" style=" position: relative; width:100%; max-width:1050px; margin:auto;">
+	<div id="flipbook">
+		<div class="page"><img src="pages/page1.jpg"></div>
+		<div class="page"><img src="pages/page2.jpg"></div>
+		<div class="page"><img src="pages/page3.jpg"></div>
+		<div class="page"><img src="pages/page4.jpg"></div>
+		<div class="page"><img src="pages/page5.jpg"></div>
+		<div class="page"><img src="pages/page6.jpg"></div>
+		<div class="page"><img src="pages/page7.jpg"></div>
+		<div class="page"><img src="pages/page8.jpg"></div>
+		<div class="page"><img src="pages/page9.jpg"></div>
+		<div class="page"><img src="pages/page10.jpg"></div>
+		<div class="page"><img src="pages/page11.jpg"></div>
+		<div class="page"><img src="pages/page12.jpg"></div>
+		<div class="page"><img src="pages/page13.jpg"></div>
+		<div class="page"><img src="pages/page14.jpg"></div>
+		<div class="page"><img src="pages/page15.jpg"></div>
+		<div class="page"><img src="pages/page16.jpg"></div>
+		<div class="page"><img src="pages/page17.jpg"></div>
+		<div class="page"><img src="pages/page18.jpg"></div>
+		<div class="page"><img src="pages/page19.jpg"></div>
+		<div class="page"><img src="pages/page20.jpg"></div>
+		<div class="page"><img src="pages/page21.jpg"></div>
+		<div class="page"><img src="pages/page22.jpg"></div>
+		<div class="page"><img src="pages/page23.jpg"></div>
+		<div class="page"><img src="pages/page24.jpg"></div>
+	</div>
 </div>
 
 <div clas="nav-buttons" style="text-align: center; margin-top: 20px;">
@@ -49,70 +49,106 @@
 <script>
 $(document).ready(function() {
 
-  let $currentImg = null;
-  let clickLevel = 0; // 0 = normal, 1 = 1.3, 2 = 2
+	  let $currentImg = null;
+	  let clickLevel = 0; // 0 = normal, 1 = 1.3, 2 = 2
 
-	// Init Turn.js
-	$('#flipbook').turn({
+	  // Conteneur responsive
+	  const $container = $('#flipbook-container');
+
+	  // Fonction pour redimensionner le flipbook
+	  function resizeFlipbook() {
+		const containerWidth = $container.width();
+		const containerHeight = containerWidth * 625 / 1050; // ratio 1050x625
+		$('#flipbook').turn('size', containerWidth, containerHeight);
+	  }
+
+	  // On applique une transition CSS dès le départ
+	  $('#flipbook').css({'transition': 'transform 0s ease'});
+
+	  // Initialisation Turn.js
+	  $('#flipbook').turn({
 		width: 1050,
 		height: 625,
 		autoCenter: true,
 		display: 'double'
-	});
-  
-	$('#next-page').on('click', function() {
+	  });
+	  
+	  setTimeout(() => {
+		$('#flipbook').css({'transition': 'transform 0.5s ease'});
+	  }, 50);
+
+	  // Forcer la position initiale s’il s’agit de la page 1
+	  if ($('#flipbook').turn('page') === 1) {
+		$('#flipbook').css('transform', 'translateX(-25%)');
+	  }
+
+	  // Gérer les changements de page
+	  $('#flipbook').bind('turned', function (event, page) {
+		if (page === 1) {
+		  $('#flipbook').css('transform', 'translateX(-25%)');
+		} else {
+		  $('#flipbook').css('transform', 'translateX(0)');
+		}
+	  });
+
+	  // Redimensionnement à chaque changement de fenêtre
+	  $(window).on('resize', resizeFlipbook);
+
+	  // Boutons next/previous
+	  $('#next-page').on('click', function() {
 		$('#flipbook').turn('next');
-	});
-
-	$('#prev-page').on('click', function() {
+	  });
+	  $('#prev-page').on('click', function() {
 		$('#flipbook').turn('previous');
+	  });
+
+
+
+	// Zoom 3 niveaux
+	function resetZoom($img) {
+	  $img.css({
+		'transform': 'scale(1)',
+		'cursor': 'zoom-in'
+	  });
+	}
+
+	// Délégué sur le conteneur pour toutes les images
+	$('#flipbook').on('click', '.page img', function(e) {
+	  const img = this;
+
+	  if ($currentImg && $currentImg[0] !== img) {
+		resetZoom($currentImg);
+		clickLevel = 0;
+	  }
+
+	  $currentImg = $(img);
+
+	  // Cycle 0 → 1 → 2 → 0
+	  clickLevel = (clickLevel + 1) % 3;
+
+	  let scale;
+	  if (clickLevel === 1) scale = 1.3;
+	  else if (clickLevel === 2) scale = 2;
+	  else scale = 1;
+
+	  // Calcul du point cliqué pour le transform-origin
+	  const rect = img.getBoundingClientRect();
+	  const offsetX = e.clientX - rect.left;
+	  const offsetY = e.clientY - rect.top;
+	  const originX = (offsetX / rect.width) * 100;
+	  const originY = (offsetY / rect.height) * 100;
+
+	  let cursor = clickLevel === 2 ? 'zoom-out' : 'zoom-in';
+
+	  $currentImg.css({
+		'transform-origin': `${originX}% ${originY}%`,
+		'transform': `scale(${scale})`,
+		'cursor': cursor
+	  });
 	});
 
-  $('#flipbook .page img').on('click', function(e) {
-    const img = this;
-
-    if ($currentImg && $currentImg[0] !== img) {
-      resetZoom($currentImg);
-      clickLevel = 0;
-    }
-
-    $currentImg = $(img);
-
-    // Cycle 0 → 1 → 2 → 0
-    clickLevel = (clickLevel + 1) % 3;
-
-    let scale;
-    if (clickLevel === 1) scale = 1.3;
-    else if (clickLevel === 2) scale = 2;
-    else scale = 1;
-
-    // Calcul du point cliqué pour le transform-origin
-    const rect = img.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left;
-    const offsetY = e.clientY - rect.top;
-    const originX = (offsetX / rect.width) * 100;
-    const originY = (offsetY / rect.height) * 100;
-
-    // Définir le curseur selon le prochain clic
-    let cursor;
-    if (clickLevel === 2) cursor = 'zoom-out'; // niveau 2 → prochain clic va réduire
-    else cursor = 'zoom-in'; // sinon zoomer
-
-    $currentImg.css({
-      'transform-origin': `${originX}% ${originY}%`,
-      'transform': `scale(${scale})`,
-      'cursor': cursor
-    });
-  });
-
-  function resetZoom($img) {
-    $img.css({
-      'transform': 'scale(1)',
-      'cursor': 'zoom-in'
-    });
-  }
+  
 });
-
 
 </script>
 </body>
