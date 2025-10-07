@@ -1,5 +1,5 @@
 /* CSS styles for flipbook */
-body {	margin:0; padding:0;}
+body {margin:0; padding:0; background-color:#efefef;}
 #flipbook {width: 90%; max-width: 1050px; margin:50px auto;}
 #flipbook .page {width:100%; height:100%; overflow: hidden; position: relative;}
 #flipbook .page img {width:100%;height:auto;}
