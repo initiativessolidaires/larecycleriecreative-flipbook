@@ -79,13 +79,13 @@ $(document).ready(function() {
 
 	  // Forcer la position initiale s’il s’agit de la page 1
 	  if ($('#flipbook').turn('page') === 1) {
-		$('#flipbook').css('transform', 'translateX(-25%)');
+		$('#flipbook').css('transform', 'translateX(-50%)');
 	  }
 
 	  // Gérer les changements de page
 	  $('#flipbook').bind('turned', function (event, page) {
 		if (page === 1) {
-		  $('#flipbook').css('transform', 'translateX(-25%)');
+		  $('#flipbook').css('transform', 'translateX(-50%)');
 		} else {
 		  $('#flipbook').css('transform', 'translateX(0)');
 		}
