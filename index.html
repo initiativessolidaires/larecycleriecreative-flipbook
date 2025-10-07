@@ -39,7 +39,7 @@
 		<div class="page"><img src="pages/page23.jpg"></div>
 		<div class="page"><img src="pages/page24.jpg"></div>
 	</div>
-	<div clas="nav-buttons" style="text-align: center; margin-top: 20px; float: left;">
+	<div clas="nav-buttons" style="text-align: center; margin-top: 20px;">
   		<button id="prev-page" class="nav-btn" style="padding: 10px 20px; margin-right: 10px;" title="Page précédente">&larr;</button>
   		<button id="next-page" class="nav-btn" style="padding: 10px 20px;" title="Page suivante">&rarr;</button>
 	</div>
@@ -80,13 +80,13 @@ $(document).ready(function() {
 
 	  // Forcer la position initiale s’il s’agit de la page 1
 	  if ($('#flipbook').turn('page') === 1) {
-		$('#flipbook').css('transform', 'translateX(-50%)');
+		$('#flipbook').css('transform', 'translateX(-25%)');
 	  }
 
 	  // Gérer les changements de page
 	  $('#flipbook').bind('turned', function (event, page) {
 		if (page === 1) {
-		  $('#flipbook').css('transform', 'translateX(-50%)');
+		  $('#flipbook').css('transform', 'translateX(-25%)');
 		} else {
 		  $('#flipbook').css('transform', 'translateX(0)');
 		}
