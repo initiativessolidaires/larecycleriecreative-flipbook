@@ -63,33 +63,12 @@ $(document).ready(function() {
 		$('#flipbook').turn('size', containerWidth, containerHeight);
 	  }
 
-	  // On applique une transition CSS dès le départ
-	  $('#flipbook').css({'transition': 'transform 0s ease'});
-
 	  // Initialisation Turn.js
 	  $('#flipbook').turn({
 		width: 1050,
 		height: 625,
 		autoCenter: true,
 		display: 'double'
-	  });
-	  
-	  setTimeout(() => {
-		$('#flipbook').css({'transition': 'transform 0.5s ease'});
-	  }, 50);
-
-	  // Forcer la position initiale s’il s’agit de la page 1
-	  if ($('#flipbook').turn('page') === 1) {
-		$('#flipbook').css('transform', 'translateX(-25%)');
-	  }
-
-	  // Gérer les changements de page
-	  $('#flipbook').bind('turned', function (event, page) {
-		if (page === 1) {
-		  $('#flipbook').css('transform', 'translateX(-25%)');
-		} else {
-		  $('#flipbook').css('transform', 'translateX(0)');
-		}
 	  });
 
 	  // Redimensionnement à chaque changement de fenêtre
