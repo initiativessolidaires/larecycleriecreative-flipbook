@@ -30,3 +30,21 @@ body {margin:0; padding:0; background-color:#efefef;}
   cursor: zoom-in;
   user-select: none;
 }
+
+/* Version mobile : boutons plus gros et espacés */
+@media (max-width: 768px) {
+  .nav-btn {
+    font-size: 3rem;        /* plus lisible */
+    padding: 1.5rem 2.5rem;       /* plus de zone cliquable */
+    border-radius: 12px;      /* coins légèrement arrondis */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  }
+
+  #prevBtn { left: -30px; }   /* ajustement léger sur mobile */
+  #nextBtn { right: -30px; }
+
+  .nav-buttons {
+    margin-top: 30px;         /* plus d'espace avec le flipbook */
+    text-align: center;       /* centré sur mobile */
+  }
+}
