@@ -39,7 +39,7 @@
 		<div class="page"><img src="pages/page23.jpg"></div>
 		<div class="page"><img src="pages/page24.jpg"></div>
 	</div>
-	<div clas="nav-buttons" style="text-align: center; margin-top: 20px;">
+	<div class="nav-buttons" style="text-align: center; margin-top: 20px;">
   		<button id="prev-page" class="nav-btn" style="padding: 10px 20px; margin-right: 10px;" title="Page précédente">&larr;</button>
   		<button id="next-page" class="nav-btn" style="padding: 10px 20px;" title="Page suivante">&rarr;</button>
 	</div>
@@ -84,48 +84,54 @@ $(document).ready(function() {
 
 
 
-	// Zoom 3 niveaux
-	function resetZoom($img) {
-	  $img.css({
-		'transform': 'scale(1)',
-		'cursor': 'zoom-in'
-	  });
-	}
+  // Zoom 3 niveaux
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-	// Délégué sur le conteneur pour toutes les images
-	$('#flipbook').on('click', '.page img', function(e) {
-	  const img = this;
+  if (!isTouchDevice) {
+    // si ordinateur : activer le zoom personnalisé (sinon désactivé sur mobile car pinch-to-zoom natif)
 
-	  if ($currentImg && $currentImg[0] !== img) {
-		resetZoom($currentImg);
-		clickLevel = 0;
-	  }
+    function resetZoom($img) {
+      $img.css({
+        'transform': 'scale(1)',
+        'cursor': 'zoom-in'
+      });
+    }
 
-	  $currentImg = $(img);
+    $('#flipbook').on('click', '.page img', function(e) {
+      const img = this;
 
-	  // Cycle 0 → 1 → 2 → 0
-	  clickLevel = (clickLevel + 1) % 3;
+      if ($currentImg && $currentImg[0] !== img) {
+        resetZoom($currentImg);
+        clickLevel = 0;
+      }
 
-	  let scale;
-	  if (clickLevel === 1) scale = 1.3;
-	  else if (clickLevel === 2) scale = 2;
-	  else scale = 1;
+      $currentImg = $(img);
 
-	  // Calcul du point cliqué pour le transform-origin
-	  const rect = img.getBoundingClientRect();
-	  const offsetX = e.clientX - rect.left;
-	  const offsetY = e.clientY - rect.top;
-	  const originX = (offsetX / rect.width) * 100;
-	  const originY = (offsetY / rect.height) * 100;
+      // Cycle 0 → 1 → 2 → 0
+      clickLevel = (clickLevel + 1) % 3;
 
-	  let cursor = clickLevel === 2 ? 'zoom-out' : 'zoom-in';
+      let scale;
+      if (clickLevel === 1) scale = 1.3;
+      else if (clickLevel === 2) scale = 2;
+      else scale = 1;
 
-	  $currentImg.css({
-		'transform-origin': `${originX}% ${originY}%`,
-		'transform': `scale(${scale})`,
-		'cursor': cursor
-	  });
-	});
+      // Calcul du point cliqué pour le transform-origin
+      const rect = img.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      const originX = (offsetX / rect.width) * 100;
+      const originY = (offsetY / rect.height) * 100;
+
+      let cursor = clickLevel === 2 ? 'zoom-out' : 'zoom-in';
+
+      $currentImg.css({
+        'transform-origin': `${originX}% ${originY}%`,
+        'transform': `scale(${scale})`,
+        'cursor': cursor
+      });
+    });
+
+  }
 
   
 });
